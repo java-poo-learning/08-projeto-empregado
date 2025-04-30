@@ -3,60 +3,80 @@ import static java.lang.Integer.parseInt;
 import static java.lang.Long.parseLong;
 import static java.lang.Double.parseDouble;
 
-
 public class Util {
+    private Controle controle = new Controle();
 
-    private Controle controle = new Controle ();
-    public void menu () {
-        inserir();
-        pesquisar();
-        pesquisar();
-        listar();
-    }
-
-    private void inserir () {
-        long matricula;
-        String nome;
-        double totaldeVendas , comissao , valorDaHoraTrabalhada;
-        int totalDeHorasTrabalhadas;
+    public void menu() {
         int opcao;
-        String menu = "1.Empregado Comissionado\n2.Empregado Horista\n3.Sair";
+        String aux = "1. Inserir\n2. Pesquisar\n3. Listar\n4. Finalizar";
 
-        while (true) {
-            opcao = parseInt(showInputDialog(menu));
-            if (opcao == 3) {
+        while(true) {
+            opcao = parseInt(showInputDialog(aux));
+            if(opcao == 4) {
                 return;
             }
-            if (opcao == 1 || opcao == 2) {
-                matricula = parseLong(showInputDialog("Matricula do empregado"));
+            switch(opcao) {
+                case 1:
+                    inserir();
+                    break;
+                case 2:
+                    pesquisar();
+                    break;
+                case 3:
+                    listar();
+                    break;
+                default:
+                    showMessageDialog(null, "Opção inválida");
+            }
+        }
+
+    }
+
+    private void inserir() {
+        long matricula;
+        String nome;
+        double totalDeVendas, comissao, valorDaHora;
+        int totalDeHoras;
+        int opcao;
+        String menu = "1. Empregado Comissionado\n2. Empregado Horista\n3. Sair";
+
+        while(true) {
+            opcao = parseInt(showInputDialog(menu));
+            if(opcao == 3) {
+                return;
+            }
+            if(opcao == 1 || opcao == 2) {
+                matricula = parseLong(showInputDialog("Matrícula do empregado"));
                 nome = showInputDialog("Nome do empregado");
                 if(opcao == 1) {
-                    totaldeVendas = parseDouble(showInputDialog("Valor total das vendas"));
-                    comissao = parseDouble(showInputDialog("Comissao (porcentagem)"));
-                    controle.inserir(new EmpregadoComissionado(matricula, nome, comissao, totaldeVendas));
+                    totalDeVendas = parseDouble(showInputDialog("Valor total das vends"));
+                    comissao = parseDouble(showInputDialog("Comissão (porcentagem)"));
+                    controle.inserir(new EmpregadoComissionado(matricula, nome, totalDeVendas, comissao));
                 }
                 else {
-                    totalDeHorasTrabalhadas = parseInt(showInputDialog("Total de horas trabalhadas"));
-                    valorDaHoraTrabalhada = parseDouble(showInputDialog("Valor da hora:  "));
-                    controle.inserir(new EmpregadoHorista(matricula , nome, totalDeHorasTrabalhadas, valorDaHoraTrabalhada));
+                    totalDeHoras = parseInt(showInputDialog("Total de horas trabalhadas"));
+                    valorDaHora = parseDouble(showInputDialog("Valor da hora trabalhada"));
+                    controle.inserir(new EmpregadoHorista(matricula, nome, totalDeHoras, valorDaHora));
                 }
             }
         }
     }
 
-    private void pesquisar () {
-        long matricula = parseLong(showInputDialog("Matícula para pesquisa"));
+    private void pesquisar() {
+        long matricula = parseLong(showInputDialog("Matrícula para pesquisa"));
         Empregado empregado = controle.pesquisar(matricula);
-        if (empregado == null) {
-            showMessageDialog(null, "Empregado com a matrícula" + matricula + "não encontrado");
+        if(empregado == null) {
+            showMessageDialog(null, "Empregado com a matrícula " + matricula + " não encontrado");
         }
         else {
             showMessageDialog(null, empregado.getDados());
         }
-
     }
 
-    private void listar () {
+    private void listar() {
         showMessageDialog(null, controle.listar());
     }
+
 }
+
+
